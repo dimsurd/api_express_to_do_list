@@ -7,7 +7,9 @@ const getAllUser = () => {
 };
 
 const getUserById = async (id) => {
-  const [dataUser] = dbPool.execute(`SELECT * FROM users WHERE ID = ${id}`);
+  const [dataUser] = await dbPool.execute(
+    `SELECT * FROM users WHERE ID = ${id}`
+  );
 
   if (dataUser.length === 0) {
     throw new Error("User not found");
