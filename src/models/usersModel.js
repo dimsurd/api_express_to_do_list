@@ -86,23 +86,19 @@ const forgotPassword = async (id, body) => {
 };
 
 const loginUser = async (body) => {
-  const { username, password } = body;
+  const username = body.username;
+  const password = body.password;
+  const sqlQuery = "SELECT * FROM users WHERE username = ? LIMIT 1";
+  const [rows] = await dbPool.query(sqlQuery, [username]);
 
-  const [dataUser] = await dbPool.execute(
-    `SELECT * FROM users WHERE username='${username}'`
-  );
-
-  if (dataUser.length <= 0) {
+  if (rows.length === 0) {
     throw new Error("Wrong username");
   }
 
-  const storedHashedPassword = dataUser[0].password;
-  const isPasswordValid = await bcrypt.compare(password, storedHashedPassword);
-
+  const isPasswordValid = await bcrypt.compare(password, rows[0].password);
   if (!isPasswordValid) {
     throw new Error("Invalid Password");
   }
-
   return { message: "Successful login" };
 };
 

@@ -21,8 +21,6 @@ const getUserById = async (req, res) => {
     const { id } = req.params;
     const data = await usersModel.getUserById(id);
 
-    console.log(data);
-
     res.status(200).json({
       message: "Get user success",
       data,
