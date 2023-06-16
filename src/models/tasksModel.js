@@ -38,9 +38,26 @@ const updateTask = async (id, body) => {
   }
 };
 
-const deleteTask = (id) => {
-  const sqlQUery = `DELETE FROM tasks WHERE id = ${id}`;
-  return dbPool.execute(sqlQUery);
+const deleteTask = async (id, body) => {
+  const { id_users } = body;
+  const [dataTask] = await dbPool.execute(`SELECT * FROM tasks WHERE id=${id}`);
+
+  if (dataTask.length === 0) {
+    throw new Error("Task not found");
+  }
+
+  const task_id_user = dataTask[0].id_users;
+
+  if (id_users !== task_id_user) {
+    throw new Error("Invalid credentials");
+  }
+
+  try {
+    const sqlQUery = `DELETE FROM tasks WHERE id = ${id}`;
+    return dbPool.execute(sqlQUery);
+  } catch (err) {
+    throw new Error("Something went wrong");
+  }
 };
 
 module.exports = {

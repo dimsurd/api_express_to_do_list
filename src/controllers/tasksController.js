@@ -50,7 +50,7 @@ const createTask = async (req, res) => {
 const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const dataTask = await tasksModel.updateTask(id, req.body);
+    await tasksModel.updateTask(id, req.body);
 
     res.status(200).json({
       message: "Update success",
@@ -67,7 +67,7 @@ const updateTask = async (req, res) => {
 const deleteTask = async (req, res) => {
   const { id } = req.params;
   try {
-    await tasksModel.deleteTask(id);
+    await tasksModel.deleteTask(id, req.body);
     res.status(200).json({
       message: "Delete success",
     });
