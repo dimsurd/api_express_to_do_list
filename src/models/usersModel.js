@@ -6,6 +6,16 @@ const getAllUser = () => {
   return dbPool.execute(sqlQuery);
 };
 
+const getUserById = async (id) => {
+  const [dataUser] = dbPool.execute(`SELECT * FROM users WHERE ID = ${id}`);
+
+  if (dataUser.length === 0) {
+    throw new Error("User not found");
+  }
+
+  return dataUser;
+};
+
 const createUser = async (body) => {
   const { username, password } = body;
 
@@ -106,4 +116,5 @@ module.exports = {
   forgotPassword,
   loginUser,
   deleteUser,
+  getUserById,
 };

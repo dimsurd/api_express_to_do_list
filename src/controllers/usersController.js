@@ -16,6 +16,25 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await usersModel.getUserById(id);
+
+    console.log(data);
+
+    res.status(200).json({
+      message: "Get user success",
+      data,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Get user failed",
+      error: err.message,
+    });
+  }
+};
+
 const createUser = async (req, res) => {
   try {
     await usersModel.createUser(req.body);
@@ -99,4 +118,5 @@ module.exports = {
   deleteUser,
   forgotPassword,
   loginUser,
+  getUserById,
 };
